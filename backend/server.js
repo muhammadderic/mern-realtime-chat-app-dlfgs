@@ -1,6 +1,8 @@
 import express from "express";
 import dotenv from "dotenv";
 
+import connectToDb from "./config/connectToDb.js";
+
 // Load environment variables
 dotenv.config();
 
@@ -32,5 +34,6 @@ app.use((err, req, res, next) => {
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
+  connectToDb();
   console.log(`Server running on port ${PORT}`);
 });
