@@ -2,6 +2,7 @@ import express from "express";
 import dotenv from "dotenv";
 
 import connectToDb from "./config/connectToDb.js";
+import authRoutes from "./routes/auth.routes.js";
 
 // Load environment variables
 dotenv.config();
@@ -12,10 +13,8 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Base route
-app.get("/", (req, res) => {
-  res.json({ message: "API is running!" });
-});
+// Routes
+app.use("/api/v1/auth", authRoutes);
 
 // Handle 404 (Not Found)
 app.use((req, res, next) => {
