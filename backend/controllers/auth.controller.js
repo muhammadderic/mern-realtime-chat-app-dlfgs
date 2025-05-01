@@ -1,6 +1,7 @@
 import bcrypt from "bcryptjs";
 
 import User from "../models/user.model.js";
+import generateTokenAndSetCookie from "../utils/generateTokenAndSetCookie.js";
 import { apiResponse } from "../utils/apiResponse.js";
 
 /**
@@ -40,13 +41,20 @@ export const signup = async (req, res) => {
     });
 
     // Save user and return success response
-    await newUser.save();
-    apiResponse.created(res, {
-      _id: newUser._id,
-      fullName: newUser.fullName,
-      username: newUser.username,
-      profilePic: newUser.profilePic,
-    });
+    if (newUser) {
+      // Generate JWT token here
+      generateTokenAndSetCookie(newUser._id, res);
+      await newUser.save();
+
+      apiResponse.created(res, {
+        _id: newUser._id,
+        fullName: newUser.fullName,
+        username: newUser.username,
+        profilePic: newUser.profilePic,
+      });
+    } else {
+      apiResponse.badRequest(res, "Invalid user data");
+    }
   } catch (error) {
     console.log("Error in signup controller", error.message);
     apiResponse.errorISE(res);
