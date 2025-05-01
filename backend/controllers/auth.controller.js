@@ -68,7 +68,28 @@ export const signup = async (req, res) => {
  */
 export const login = async (req, res) => {
   try {
-    apiResponse.success(res, "Login");
+    // Extract login credentials from request body
+    const { username, password } = req.body;
+
+    // Find user by username
+    const user = await User.findOne({ username });
+
+    // Validate user existence and password correctness
+    const isPasswordCorrect = await bcrypt.compare(password, user?.password || "");
+    if (!user || !isPasswordCorrect) {
+      return apiResponse.badRequest(res, "Invalid username or password");
+    }
+
+    // Generate auth token and attach as cookie
+    generateTokenAndSetCookie(user._id, res);
+
+    // Send successful login response with user profile
+    apiResponse.success(res, {
+      _id: user._id,
+      fullName: user.fullName,
+      username: user.username,
+      profilePic: user.profilePic,
+    });
   } catch (error) {
     console.log("Error in login controller", error.message);
     apiResponse.errorISE(res);
@@ -82,7 +103,8 @@ export const login = async (req, res) => {
  */
 export const logout = (req, res) => {
   try {
-    apiResponse.success(res, "Logout");
+    res.cookie("jwt", "", { maxAge: 0 });
+    apiResponse.success(res, "Logged out successfully");
   } catch (error) {
     console.log("Error in logout controller", error.message);
     apiResponse.errorISE(res);
