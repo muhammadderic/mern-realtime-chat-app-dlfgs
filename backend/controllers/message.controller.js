@@ -43,3 +43,31 @@ export const sendMessage = async (req, res) => {
     apiResponse.errorISE(res);
   }
 };
+
+export const getMessages = async (req, res) => {
+  try {
+    // Extract chat partner ID from route params
+    const { id: userToChatId } = req.params;
+
+    // Get authenticated user's ID from request
+    const senderId = req.user._id;
+
+    // Fetch conversation containing both participants and populate messages
+    const conversation = await Conversation.findOne({
+      participants: { $all: [senderId, userToChatId] },
+    }).populate("messages"); // NOT REFERENCE BUT ACTUAL MESSAGES
+
+    // Return empty array when conversation does not exist
+    if (!conversation) return res.status(200).json([]);
+
+    // Extract messages from the conversation document
+    const messages = conversation.messages;
+
+    // Return conversation messages with success response
+    res.status(200).json(messages);
+  } catch (error) {
+    // Log error and return internal server error response
+    console.log("Error in getMessages controller: ", error.message);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
