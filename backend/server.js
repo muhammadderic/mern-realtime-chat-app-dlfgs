@@ -5,11 +5,12 @@ import cookieParser from "cookie-parser";
 import connectToDb from "./config/connectToDb.js";
 import authRoutes from "./routes/auth.routes.js";
 import userRoutes from "./routes/user.routes.js";
+import messageRoutes from "./routes/message.routes.js";
+
+import { app, server } from "./socket/socket.js";
 
 // Load environment variables
 dotenv.config();
-
-const app = express();
 
 // Middleware
 app.use(express.json());
@@ -19,6 +20,7 @@ app.use(cookieParser());
 // Routes
 app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/users", userRoutes);
+app.use("/api/v1/messages", messageRoutes);
 
 // Handle 404 (Not Found)
 app.use((req, res, next) => {
@@ -36,7 +38,7 @@ app.use((err, req, res, next) => {
 // Server listener
 const PORT = process.env.PORT || 5000;
 
-app.listen(PORT, () => {
+server.listen(PORT, () => {
   connectToDb();
   console.log(`Server running on port ${PORT}`);
 });
