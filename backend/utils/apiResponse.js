@@ -50,6 +50,22 @@ export const apiResponse = {
     });
   },
 
+  unauthorized: (res, error = {}, message = "Unauthorized") => {
+    return res.status(401).json({
+      success: false,
+      message,
+      error,
+    });
+  },
+
+  notFound: (res, error = {}, message = "Not Found") => {
+    return res.status(404).json({
+      success: false,
+      message,
+      error,
+    });
+  },
+
   errorISE: (res, error = null, message = "Internal Server Error") => {
     return res.status(500).json({
       success: false,

@@ -4,6 +4,7 @@ import cookieParser from "cookie-parser";
 
 import connectToDb from "./config/connectToDb.js";
 import authRoutes from "./routes/auth.routes.js";
+import userRoutes from "./routes/user.routes.js";
 
 // Load environment variables
 dotenv.config();
@@ -17,6 +18,7 @@ app.use(cookieParser());
 
 // Routes
 app.use("/api/v1/auth", authRoutes);
+app.use("/api/v1/users", userRoutes);
 
 // Handle 404 (Not Found)
 app.use((req, res, next) => {
