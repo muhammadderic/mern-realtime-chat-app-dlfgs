@@ -1,19 +1,28 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
+import GenderCheckbox from "../components/GenderCheckbox";
+import type { Gender, SignUpInputs } from "../types/types";
+import useSignup from "../hooks/useSignup";
+
 function SignUp() {
-  const [inputs, setInputs] = useState({
+  const { loading, signup } = useSignup();
+  const [inputs, setInputs] = useState<SignUpInputs>({
     fullName: "",
     username: "",
     password: "",
     confirmPassword: "",
-    gender: "",
+    gender: null,
   });
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    console.log(inputs)
+    await signup(inputs);
+  };
+
+  const handleCheckboxChange = (gender: Gender) => {
+    setInputs({ ...inputs, gender });
   };
 
   return (
@@ -50,6 +59,11 @@ function SignUp() {
             />
           </div>
 
+          <GenderCheckbox
+            onCheckboxChange={handleCheckboxChange}
+            selectedGender={inputs.gender}
+          />
+
           <div>
             <label className='label'>
               <span className='text-base label-text'>Password</span>
@@ -85,9 +99,9 @@ function SignUp() {
 
           <div className="flex w-full justify-end">
             <button
-              className="px-4 py-2 rounded-full border border-gray-500 bg-transparent cursor-pointer hover:bg-gray-600/50 transition"
+              className="px-4 py-2 rounded-full border border-gray-500 bg-transparent cursor-pointer hover:bg-gray-600/50 transition" disabled={loading}
             >
-              Sign Up
+              {loading ? <span className='loading loading-spinner'></span> : "Sign Up"}
             </button>
           </div>
         </form>
