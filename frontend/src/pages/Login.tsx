@@ -1,7 +1,9 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import useLogin from "../hooks/useLogin";
 
 function Login() {
+  const { loading, login } = useLogin();
   const [inputs, setInputs] = useState({
     username: "",
     password: "",
@@ -10,7 +12,7 @@ function Login() {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    console.log(inputs);
+    await login(inputs.username, inputs.password);
   };
 
   return (
@@ -56,9 +58,9 @@ function Login() {
 
           <div className="flex w-full justify-end">
             <button
-              className="px-4 py-2 rounded-full border border-gray-500 bg-transparent cursor-pointer hover:bg-gray-600/50 transition"
+              className="px-4 py-2 rounded-full border border-gray-500 bg-transparent cursor-pointer hover:bg-gray-600/50 transition" disabled={loading}
             >
-              Login
+              {loading ? <span className='loading loading-spinner '></span> : "Login"}
             </button>
           </div>
         </form>

@@ -1,6 +1,7 @@
 import express from "express";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
+import cors from "cors";
 
 import connectToDb from "./config/connectToDb.js";
 import authRoutes from "./routes/auth.routes.js";
@@ -13,6 +14,12 @@ import { app, server } from "./socket/socket.js";
 dotenv.config();
 
 // Middleware
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+    credentials: true,
+  })
+);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
