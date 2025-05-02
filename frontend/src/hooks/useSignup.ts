@@ -1,10 +1,14 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 
+import { useAuthContext } from "../context/AuthContext";
 import type { SignUpInputs } from "../types/types";
 
 const useSignup = () => {
+  const { setAuthUser } = useAuthContext();
 	const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
 	const signup = async ({ 
     fullName, 
@@ -41,7 +45,10 @@ const useSignup = () => {
 				throw new Error(data.error);
 			}
 
-      console.log("Signup");
+      localStorage.setItem("chat-user", JSON.stringify(data.data));
+      setAuthUser(data.data);
+
+      navigate("/", { replace: true });
 		} catch (error) {
 			if (error instanceof Error) {
         toast.error(error.message);
