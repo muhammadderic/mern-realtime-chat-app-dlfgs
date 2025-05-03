@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useSocketContext } from "../../context/SocketContext";
 import useConversation from "../../store/useConversation";
 import type { ConversationUser } from "../../types/types";
@@ -10,6 +11,7 @@ interface ConversationProps {
 
 const Conversation = ({ conversation, lastIdx, emoji }: ConversationProps) => {
   const { selectedConversation, setSelectedConversation } = useConversation();
+  const [imgError, setImgError] = useState(false);
 
   const isSelected = selectedConversation?._id === conversation._id;
   const { onlineUsers } = useSocketContext();
@@ -23,13 +25,25 @@ const Conversation = ({ conversation, lastIdx, emoji }: ConversationProps) => {
       >
         <div className={`avatar ${isOnline ? "online" : ""}`}>
           <div className='w-12 rounded-full'>
-            <img src={conversation.profilePic} alt='user avatar' />
+            {imgError ? (
+              // Fallback avatar - using user's initials
+              <div className='w-12 h-12 rounded-full bg-purple-500 flex items-center justify-center text-white font-bold'>
+                {conversation.fullName.charAt(0)}
+              </div>
+            ) : (
+              <img
+                src={conversation.profilePic}
+                alt='user avatar'
+                onError={() => setImgError(true)}
+                className="w-12 h-12 rounded-full object-cover"
+              />
+            )}
           </div>
         </div>
 
         <div className='flex flex-col flex-1'>
           <div className='flex gap-3 justify-between'>
-            <p className='font-bold text-gray-200'>{conversation.fullName}</p>
+            <p className='font-bold'>{conversation.fullName}</p>
             <span className='text-xl'>{emoji}</span>
           </div>
         </div>
