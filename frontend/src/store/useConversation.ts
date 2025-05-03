@@ -1,11 +1,11 @@
 import { create } from "zustand";
-import type { ConversationUser } from "../types/types";
+import type { ConversationUser, Message } from "../types/types";
 
 interface ConversationState {
   selectedConversation: ConversationUser | null;
   setSelectedConversation: (selectedConversation: ConversationUser | null) => void;
-  messages: any[]; 
-  setMessages: (messages: any[]) => void;
+  messages: Message[]; 
+  setMessages: (messages: Message[]) => void;
 }
 
 const useConversation = create<ConversationState>((set) => ({

@@ -18,3 +18,14 @@ export type ConversationUser = {
   updatedAt: string;
   __v: number;
 }
+
+export type Message = {
+  _id: string;
+  senderId: string;
+  receiverId: string;
+  message: string;
+  createdAt: string;
+  updatedAt: string;
+  __v: number;
+  shouldShake?: boolean;
+}

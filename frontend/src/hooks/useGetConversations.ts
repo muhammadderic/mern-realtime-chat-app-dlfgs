@@ -18,7 +18,6 @@ const useGetConversations = () => {
           throw new Error(data.error);
         }
 
-        console.log("setConversations: ", data.data)
         setConversations(data.data);
       } catch (error) {
         if (error instanceof Error) {
