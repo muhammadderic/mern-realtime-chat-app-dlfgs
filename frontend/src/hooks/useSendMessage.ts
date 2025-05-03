@@ -19,9 +19,9 @@ const useSendMessage = () => {
         credentials: "include",
       });
       const data = await res.json();
-      if (data.error) throw new Error(data.error);
+      if (!data.success) throw new Error(data.error);
 
-      setMessages([...messages, data]);
+      setMessages([...messages, data.data]);
     } catch (error) {
       if (error instanceof Error) {
         toast.error(error.message);

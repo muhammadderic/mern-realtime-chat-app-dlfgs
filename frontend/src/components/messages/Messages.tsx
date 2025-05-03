@@ -6,17 +6,14 @@ import Message from "./Message";
 import MessageSkeleton from "./MessageSkeleton";
 
 const Messages = () => {
-  // Properly type the ref for a DOM element
-  const lastMessageRef = useRef<HTMLDivElement>(null);
   const { messages, loading } = useGetMessages();
   useListenMessages();
+  // Properly type the ref for a DOM element
+  const lastMessageRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     setTimeout(() => {
-      // Access the ref properly and check if it exists
-      if (lastMessageRef.current) {
-        lastMessageRef.current.scrollIntoView({ behavior: "smooth" });
-      }
+      lastMessageRef.current?.scrollIntoView({ behavior: "smooth" });
     }, 100);
   }, [messages]);
 
