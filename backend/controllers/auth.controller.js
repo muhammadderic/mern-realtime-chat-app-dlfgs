@@ -27,9 +27,10 @@ export const signup = async (req, res) => {
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
-    // Prepare profile picture URLs based on gender
-    const boyProfilePic = `https://avatar.iran.liara.run/public/boy?username=${username}`;
-    const girlProfilePic = `https://avatar.iran.liara.run/public/girl?username=${username}`;
+    // Prepare profile picture URL based on gender using DiceBear
+    // The 'adventurer' style works well for gender differentiation
+    const avatarStyle = 'adventurer'; // You can also try: 'avataaars', 'pixel-art', 'micah'
+    const profilePic = `https://api.dicebear.com/7.x/${avatarStyle}/svg?seed=${username}_${gender}`;
 
     // Create a new user instance
     const newUser = new User({
@@ -37,7 +38,7 @@ export const signup = async (req, res) => {
       username,
       password: hashedPassword,
       gender,
-      profilePic: gender === "male" ? boyProfilePic : girlProfilePic,
+      profilePic: profilePic
     });
 
     // Save user and return success response

@@ -18,6 +18,64 @@
 	background: #242424;
 }
 
+/* Chat positioning and layout */
+.chat {
+  display: flex;
+  margin-bottom: 1rem;
+  max-width: 100%;
+  position: relative;
+}
+
+.chat-start {
+  justify-content: flex-start;
+  text-align: left;
+}
+
+.chat-end {
+  justify-content: flex-end;
+  text-align: right;
+}
+
+/* Chat bubble specific positioning */
+.chat-start .chat-bubble {
+  border-bottom-left-radius: 0;
+  padding: .5rem
+}
+
+.chat-end .chat-bubble {
+  border-bottom-right-radius: 0;
+  padding: .5rem
+}
+
+/* Avatar positioning - outer edges */
+.chat-start .chat-image {
+  order: 1;
+  align-self: flex-end;
+}
+
+.chat-end .chat-image {
+  order: 2;
+  align-self: flex-end;
+}
+
+/* Message content container */
+.chat-start .message-content {
+  order: 2;
+}
+
+.chat-end .message-content {
+  order: 1;
+}
+
+/* Monochrome enhancements */
+.grayscale {
+  filter: grayscale(100%);
+}
+
+.monochrome-shadow {
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+}
+
 /* SHAKE ANIMATION ON HORIZONTAL DIRECTION */
 .shake {
 	animation: shake 0.82s cubic-bezier(0.36, 0.07, 0.19, 0.97) 0.2s both;
